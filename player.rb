@@ -1,6 +1,8 @@
 require_relative "card"
 class Player
 
+  attr_reader :name
+
   def initialize(name="Mr. Somebody", chips=100)
     @name = name
     @chips = chips
@@ -18,10 +20,10 @@ class Player
   end
 
   def show_cards
-    puts "#{@name} gets #{@cards.size} cards, #{point} points:"
+    puts "#{name} gets #{@cards.size} cards, #{point} points:"
     @cards.each { |card| puts card }
-    puts "#{@name} gets blackjack" if blackjack?
-    puts "#{@name} gets bust!" if bust? 
+    puts "#{name} gets blackjack" if blackjack?
+    puts "#{name} gets bust!" if bust? 
     puts
   end
 
