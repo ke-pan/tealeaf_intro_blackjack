@@ -1,38 +1,41 @@
 require_relative "card"
+require_relative "utils"
 
 class Deck
+  SUIT_SPADE = "\u2660".encode('utf-8')
+  SUIT_HEART = "\u2665".encode('utf-8')
+  SUIT_DIAMOND = "\u2666".encode('utf-8')
+  SUIT_CLUB = "\u2663".encode('utf-8')
+  SUITS = [SUIT_SPADE, SUIT_HEART, SUIT_CLUB, SUIT_DIAMOND]
+  VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+  ONE_DECK = VALUES.product(SUITS)
+
+  include Utils
   
-  def initialize(number=1)  
-    @number_of_decks = number
-    reload
+  attr_accessor :cards, :number
+
+  def initialize(number=1)
+    number = 1 if number < 1
+    @number = number
+    reload(number)
   end
 
   def shuffle
-    @cards.shuffle!
+    prompt "Shuffling..."
+    cards.shuffle!
   end
 
   def deal
-    reload if @cards.empty?
-    @cards.pop
-  end
-
-  def reload
-    suits = ["spade", "heart", "club", "diamond"]
-    points = (1..13)
-    one_deck = []
-    suits.each do |suit|
-      points.each do |point|
-        one_deck.push Card.new(point, suit)
-      end
+    if cards.empty?
+      prompt "We played out of cards, reloading..."
+      reload(number)
+      shuffle
     end
-    @cards = one_deck * @number_of_decks
+    cards.pop
   end
 
-  def to_s
-    @cards.map { |card| card.to_s }.to_s
+  def reload(number)
+    self.cards = (ONE_DECK * number).map {|v, s| Card.new(v, s)}
   end
 
 end
-
-#deck = Deck.new(2)
-#puts deck

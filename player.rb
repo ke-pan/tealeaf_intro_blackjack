@@ -1,43 +1,32 @@
-require_relative "card"
 class Player
 
   attr_reader :name
+  attr_accessor :cards, :action
 
-  def initialize(name="Mr. Somebody", chips=100)
-    @name = name
-    @chips = chips
+  def initialize(name="Mr. Somebody")
+    @name  = name
     @cards = []
-    @point = 0
-  end
-
-  def bet(wager=10) 
-    @wager = wager
+    @action = 'hit'
   end
 
   def deal(card)
-    @cards << card
-    #show_cards
+    cards.push(card)
   end
 
-  def show_cards
-    puts "#{name} gets #{@cards.size} cards, #{point} points:"
-    @cards.each { |card| puts card }
-    puts "#{name} gets blackjack" if blackjack?
-    puts "#{name} gets bust!" if bust? 
-    puts
+  def hands
+    cards.reduce('') { |memo, card| memo + " #{card}" }
   end
 
   def point
-    aces = @cards.select { |card| card.ace? }
-    @point = @cards.reduce(0) { |memo, card| memo + card.point}
-    
-    loop do
-      break if aces.empty? || @point + 10 > 21
-      aces.pop
-      @point += 10
+    aces = cards.select { |card| card.ace? }
+    point = cards.reduce(0) { |memo, card| memo + card.point}
+
+    aces.each do |_ace|
+      break if point + 10 > 21
+      point += 10
     end
     
-    @point
+    point
   end
 
   def bust?
@@ -45,16 +34,22 @@ class Player
   end
 
   def blackjack?
-    point == 21 && @cards.size == 2
+    point == 21 && cards.size == 2
   end
 
   def flush
-    @cards = []
-    @point = 0
+    self.cards = []
+    self.action = 'hit'
   end
 
-
+  def status
+    if blackjack?
+      "blackjack"
+    elsif bust?
+      "bust"
+    else
+      "#{point.to_s} points"
+    end
+  end
 
 end
-
-

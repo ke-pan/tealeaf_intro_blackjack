@@ -1,14 +1,12 @@
 require_relative "player"
-require_relative "deck"
-require_relative "card"
 
 class Dealer < Player
 
-  def show_initial_cards
-    puts "#{name} gets #{@cards.size} cards:"
-    puts "The upcard is #{@cards[0]}"
-    puts
+  # def show_initial_cards
+  #   print "#{name}:  #{cards[1]} ##\n"
+  # end
+
+  def initial_hands
+    " ## #{cards[1]}"
   end
-
-
 end
