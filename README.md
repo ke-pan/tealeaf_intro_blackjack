@@ -6,4 +6,4 @@ rule: http://en.wikipedia.org/wiki/Blackjack#Rules_of_play_at_casinos
 
 utf-8 support terminal needed
 
-usage: ruby blackjack.rb
+usage: ruby main.rb

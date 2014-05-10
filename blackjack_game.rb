@@ -64,8 +64,7 @@ class BlackjackGame
 
   def show_table(initial=true)
     clear_screen
-    width = dealer.name.length > player.name.length ? \
-            dealer.name.length : player.name.length
+    width = [dealer.name.length, player.name.length].max
     dealer_hands = initial ? dealer.initial_hands : dealer.hands
     puts "#{dealer.name.ljust(width)}: #{dealer_hands}"
     puts "#{player.name.ljust(width)}: #{player.hands}"
