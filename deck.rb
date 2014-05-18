@@ -2,11 +2,7 @@ require_relative "card"
 require_relative "utils"
 
 class Deck
-  SUIT_SPADE = "\u2660".encode('utf-8')
-  SUIT_HEART = "\u2665".encode('utf-8')
-  SUIT_DIAMOND = "\u2666".encode('utf-8')
-  SUIT_CLUB = "\u2663".encode('utf-8')
-  SUITS = [SUIT_SPADE, SUIT_HEART, SUIT_CLUB, SUIT_DIAMOND]
+  SUITS = ['spades', 'hearts', 'diamonds', 'clubs']
   VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
   ONE_DECK = VALUES.product(SUITS)
 

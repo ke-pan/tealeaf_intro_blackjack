@@ -15,11 +15,28 @@ class Card
   end
 
   def to_s
-    suit + value
+    suit_utf8 = case suit
+                when 'spades'   then "\u2660".encode('utf-8')
+                when 'hearts'   then "\u2665".encode('utf-8')
+                when 'diamonds' then "\u2666".encode('utf-8')
+                when 'clubs'    then "\u2663".encode('utf-8')
+                end 
+    suit_utf8 + value
   end
 
   def ace?
     value == 'A'
+  end
+
+  def pic_name
+    value = case self.value
+            when 'A' then 'ace'
+            when 'J' then 'jack'
+            when 'Q' then 'queen'
+            when 'K' then 'king'
+            else self.value
+            end
+    suit + '_' + value
   end
 
 end

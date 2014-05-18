@@ -1,0 +1,47 @@
+<div class="hero-unit" style="padding: 10px; margin-bottom: 5px">
+  <p class="text-info"><%= @dealer.name %>:</p>
+  <div>
+    <% if @player.blackjack? || @player.bust? || @player.action == 'stay' %>
+      <% @dealer.cards.each do |card| %>
+        <img src="images/cards/<%= card.pic_name %>.jpg" class="img-polaroid">
+      <% end %>
+    <% else %>
+      <img src="images/cards/cover.jpg" class="img-polaroid">
+      <img src="images/cards/<%= @dealer.cards[1].pic_name %>.jpg" class="img-polaroid">
+    <% end %>
+  </div>
+</div>
+<div class="hero-unit" style="padding: 10px; margin-bottom: 15px">
+  <p class="text-info"> <%= @player.name %>:</p>
+  <div>
+    <% @player.cards.each do |card| %>
+      <img src="images/cards/<%= card.pic_name %>.jpg" class="img-polaroid">
+    <% end %>
+  </div>
+</div>
+<div class="hero-unit" style="padding: 10px; margin-bottom: 15px">
+  <% if @player.blackjack? || @player.bust? || @player.action == 'stay' %>
+    <p class="text-info">
+      <%= "#{@player.name} got #{@player.status}, #{@dealer.name} got \
+  #{@dealer.status}. #{@result}" %>
+    </p>
+    <% if @player.money <= 0 %>
+      <form method="post" class="form-actions">
+        <label class="text-info">You are out of money, see you next time.</label>
+        <button type="submit" name="quit" class="btn btn-primary">Go home</button>
+      </form>
+    <% else %>
+      <form method="post" class="form-actions">
+        <label class="text-info">Do you want you play again?</label>
+        <button type="submit" name="again" class="btn btn-primary">Play again</button>
+        <button type="submit" name="quit" class="btn">Cancel</button>
+      </form>
+    <% end %>
+  <% else %>
+    <form method="post" class="form-actions">
+      <label class="text-info"><%= "You have #{@player.status}." %></label>
+      <button type="submit" name="stay" class="btn btn-primary">Stay</button>
+      <button type="submit" name="hit" class="btn">Hit</button>
+    </form>
+  <% end %>
+</div>

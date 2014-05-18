@@ -1,12 +1,13 @@
 class Player
 
   attr_reader :name
-  attr_accessor :cards, :action
+  attr_accessor :cards, :action, :bet, :money
 
-  def initialize(name="Mr. Somebody")
+  def initialize(name="Mr. Somebody", money=100)
     @name  = name
     @cards = []
     @action = 'hit'
+    @money = money
   end
 
   def deal(card)
@@ -50,6 +51,17 @@ class Player
     else
       "#{point.to_s} points"
     end
+  end
+
+  def win
+    self.money += bet
+  end
+
+  def tie
+  end
+
+  def lose
+    self.money -= bet
   end
 
 end
