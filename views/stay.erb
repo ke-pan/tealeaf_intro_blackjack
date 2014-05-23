@@ -1,0 +1,27 @@
+<div id="dealer-cards">
+  <% @dealer.cards.each do |card| %>
+    <img src="images/cards/<%= card.pic_name %>.jpg" class="img-polaroid">
+  <% end %>
+</div>
+
+<div class="hero-unit" id="result-zone" style="padding: 10px; margin-bottom: 15px">
+  <p class="text-info">
+    <%= "#{@player.name} got #{@player.status}, #{@dealer.name} got \
+#{@dealer.status}. #{@result}" %>
+  </p>
+</div>
+
+<div class="hero-unit" id="action-zone" style="padding: 10px; margin-bottom: 15px">
+  <% if @player.money <= 0 %>
+    <form action="/game/quit" method="get">
+      <label class="text-info">You are out of money, see you next time.</label>
+      <button type="submit" name="quit" class="btn btn-primary">Go home</button>
+    </form>
+  <% else %>
+    <form action="/game/again" method="get">
+      <label class="text-info">Do you want you play again?</label>
+      <button type="submit" name="again" class="btn btn-primary">Play again</button>
+      <button type="submit" name="quit" class="btn">Cancel</button>
+    <form>
+  <% end %>
+</div>

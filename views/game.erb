@@ -1,0 +1,43 @@
+<div class="hero-unit" id="dealer-table" style="padding: 10px; margin-bottom: 5px">
+  <p class="text-info"><%= @dealer.name %>:</p>
+  <div id="dealer-cards">
+    <% if @player.blackjack? %>
+      <img src="images/cards/<%= @dealer.cards[0].pic_name %>.jpg" class="img-polaroid">
+    <% else %>
+      <img src="images/cards/cover.jpg" class="img-polaroid">
+    <% end %>
+      <img src="images/cards/<%= @dealer.cards[1].pic_name %>.jpg" class="img-polaroid">
+  </div>
+</div>
+
+<div class="hero-unit" id="player-table" style="padding: 10px; margin-bottom: 15px">
+  <p class="text-info"> <%= @player.name %>:</p>
+  <div id="player-cards">
+    <% @player.cards.each do |card| %>
+      <img src="images/cards/<%= card.pic_name %>.jpg" class="img-polaroid">
+    <% end %>
+  </div>
+</div>
+
+<% if @player.blackjack? %>
+  <div class="hero-unit" id="result-zone" style="padding: 10px; margin-bottom: 15px">
+    <p class="text-info">
+      <%= "#{@player.name} got #{@player.status}, #{@dealer.name} got \
+  #{@dealer.status}. #{@result}" %>
+    </p>
+  </div>
+<% end %>
+
+<div class="hero-unit" id="action-zone" style="padding: 10px; margin-bottom: 15px">
+    <% if @player.blackjack? %>
+      <form action="/game/again" method="get">
+        <label class="text-info">Do you want you play again?</label>
+        <button type="submit" name="again" class="btn btn-primary">Play again</button>
+        <button type="submit" name="quit" class="btn">Cancel</button>
+      <form>
+    <% else %>
+      <label class="text-info" id="points"><%= "You have #{@player.status}." %></label>
+      <button id="stay" class="btn btn-primary">Stay</button>
+      <button id="hit" class="btn">Hit</button>
+    <% end %>
+</div>

@@ -52,71 +52,83 @@ post '/bet' do
     session[:player] = @player
     session[:dealer] = dealer
     # binding.pry
-    redirect to('/blackjack_game')
+    redirect to('/game')
   end
 end
 
-get '/blackjack_game' do
-  # @decks = session[:decks]
+
+get '/game' do
   @player = session[:player]
   @dealer = session[:dealer]
 
-  if @player.blackjack? || @player.bust? || @player.action == 'stay'
-    @result =
-    if @player.blackjack?
-      if @dealer.blackjack?
-        @player.tie
-        "Tie!"
-      else
-        @player.win
-        "You win!"
-      end
-    elsif @player.bust?
-      @player.lose
-      "You lose!"
-    elsif @dealer.bust?
-      @player.win
-      "You win!"
-    elsif @player.point > @dealer.point
-      @player.win
-      "You win!"
-    elsif @player.point == @dealer.point
+  if @player.blackjack?
+    if @dealer.blackjack?
       @player.tie
-      "Tie!"
+      @result = "Tie!"
     else
-      @player.lose
-      "You lose!"
+      @player.win
+      @result = "You win!"
     end
   end
-  # binding.pry
-  erb :blackjack_game
+
+  erb :game
 end
 
-post '/blackjack_game' do
-  # binding.pry
-  decks = session[:decks]
-  player = session[:player]
-  dealer = session[:dealer]
+before '/game/*' do
+  @decks = session[:decks]
+  @player = session[:player]
+  @dealer = session[:dealer]
+end
 
-  if params[:again]
-    player.flush
-    dealer.flush
-    redirect to('/bet')
-  elsif params[:quit]
-    redirect to('/')
-  elsif params[:hit]
-    player.deal(decks.deal)
-  else
-    player.action = 'stay'
-    until player.bust? || player.blackjack? || dealer.point > 17
-      dealer.deal(decks.deal)
-    end
+get '/game/hit' do
+  @player.deal(@decks.deal)
+
+  if @player.bust?
+    @player.lose
+    @result = "You lose!"
   end
 
+  session[:decks] = @decks
+  session[:player] = @player
 
-      
-  session[:decks] = decks
-  session[:player] = player
-  session[:dealer] = dealer
-  redirect to('/blackjack_game')
+  erb :hit, :layout=>false
+end
+
+get '/game/stay' do 
+  until @dealer.point > 17
+    @dealer.deal(@decks.deal)
+  end
+
+  if @dealer.bust? || @player.point > @dealer.point
+    @player.win
+    @result = "You win!"
+  elsif @player.point == @dealer.point
+    @player.tie
+    @result = "Tie!"
+  else
+    @player.lose
+    @result = "You lose!"
+  end
+
+  session[:decks] = @decks
+  session[:dealer] = @dealer
+  session[:player] = @player
+
+  erb :stay, :layout=>false
+end
+
+get '/game/again' do
+  if params[:again]
+    @player.flush
+    @dealer.flush
+    session[:dealer] = @dealer
+    session[:player] = @player
+    redirect to('/bet')
+  else
+    redirect to('/')
+  end
+end
+
+get '/game/quit' do
+  redirect to('/')
 end
