@@ -61,7 +61,7 @@ get '/game' do
   @player = session[:player]
   @dealer = session[:dealer]
 
-  if @player.blackjack?
+  if @player.blackjack? || @dealer.blackjack?
     if @dealer.blackjack?
       @player.tie
       @result = "Tie!"
