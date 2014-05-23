@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<% if @player.blackjack? %>
+<% if @player.blackjack? || @dealer.blackjack? %>
   <div class="hero-unit" id="result-zone" style="padding: 10px; margin-bottom: 15px">
     <p class="text-info">
       <%= "#{@player.name} got #{@player.status}, #{@dealer.name} got \
